@@ -5,6 +5,9 @@ import User from './schema.js';
 
 const JWT_SECRET = process.env.JWT_SECRET; // Use a secure key in production
 
+export const helloPSITS = (req, res) => {
+  res.send({msg: "Hello PSITS"});
+}
 // Sign-Up Controller
 export const signUp = async (req, res) => {
   const { firstName, lastName, email, password, role, studentId } = req.body;
