@@ -47,16 +47,24 @@ export const signUp = async (req, res) => {
 
 // Login Controller
 export const login = async (req, res) => {
-  const { studentId, password } = req.body;
+  const { studentId, email, password } = req.body;
 
   try {
     console.log("Login Process Started");
 
+    if (!studentId && !email) {
+      return res.status(400).json({ message: "Please provide either student ID or email" });
+    }
+
+    const apiQuery = {};
+    if (email) apiQuery.email = email;
+    if (studentId) apiQuery.studentId = studentId;
+
     // Find the user in the database
-    const user = await User.findOne({ studentId });
+    const user = await User.findOne(apiQuery);
     if (!user) {
       console.log("User not found");
-      return res.status(401).json({ message: "Invalid student ID or password" });
+      return res.status(401).json({ message: "Invalid student ID, email or password" });
     }
 
     // Check if the password matches
